@@ -250,6 +250,9 @@ handle_call({received, Messages}, _From, State = #session{ready_state = open}) -
 handle_call({received, _Data}, _From, State = #session{ready_state = _Any}) ->
     {reply, error, State};
 
+handle_call({custom, Request}, _From, State = #session{ready_state = _Any}) ->
+    {reply, ok, emit({custom, Request}, State)};
+
 handle_call(Request, _From, State) ->
     {stop, {odd_request, Request}, State}.
 
